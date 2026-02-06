@@ -1,11 +1,34 @@
 #include <iostream>
 using namespace std;
+
+void how2Play() {
+    cout << "how to play\n"
+        "1- each player gets his turn\n"
+        "2-press r to restart and q to quit\n"
+        "3-input the number where you want to make you're play as shown below\n"
+        " 1 | 2 | 3 \n"
+        "---+---+---\n"
+        " 4 | 5 | 6 \n"
+        "---+---+---\n"
+        " 7 | 8 | 9 \n"
+        "\n\n\n"
+        ;
+}
+string  colors(char a) {
+    if (a == 'X') {
+        return  "\033[31mX\033[0m";
+    }
+    else if (a == 'O') {
+        return  "\033[32mO\033[0m";
+    }
+    else return " ";
+}
 void grid(char* t) {
-    cout << " "<< t[0] << " | " << t[1] << " | " << t[2] << "\n"
-        "-----------\n " <<
-        t[3] << " | " << t[4] << " | " << t[5] << "\n"
-        "-----------\n " <<
-        t[6] << " | " << t[7] << " | " << t[8] << "\n"
+    cout << " " << colors(t[0]) << " | " << colors(t[1]) << " | " << colors(t[2]) << "\n"
+        "---+---+---\n " <<
+        colors(t[3]) << " | " << colors(t[4]) << " | " << colors(t[5]) << "\n"
+        "---+---+---\n " <<
+        colors(t[6]) << " | " << colors(t[7]) << " | " << colors(t[8]) << "\n"
         ;
 }
 bool checkWin(char* t) {
@@ -32,6 +55,11 @@ bool checkDraw(char* t) {
     }
     return true;
 }
+void reset(char* t) {
+    cout << "\033[2J\033[H";
+    how2Play();
+    grid(t);
+}
 void modifyElements(char* t) {
     static int x = 0;
     char c;
@@ -43,28 +71,15 @@ void modifyElements(char* t) {
         t[nbElement-1] = c;
         x++;
     }
-    grid(t);
+    reset(t);
     if (checkWin(t)){ cout <<c<<" won game over\n";}
-    else if (checkDraw(t)) { cout << "draw"; }
+    else if (checkDraw(t)) { cout << "draw\n"; }
     else{
-    modifyElements(t);
+        modifyElements(t);
     };
-}
-void how2Play() {
-    cout << "how to play\n"
-        "1- each player gets his turn\n"
-        "2-input the number where you want to make you're play as shown below\n"
-        " 1 | 2 | 3 \n"
-        "-----------\n"
-        " 4 | 5 | 6 \n"
-        "-----------\n"
-        " 7 | 8 | 9 \n"
-        "\n\n\n"
-        ;
 }
 int main()
 {
-    system("COLOR 0A");
     char tab[9] = { ' ', ' ', ' ',
                     ' ',' ',' ',
                     ' ',' ',' ' };
@@ -72,6 +87,5 @@ int main()
     how2Play();
     grid(tab);
     modifyElements(tab);
-    
 }
 
